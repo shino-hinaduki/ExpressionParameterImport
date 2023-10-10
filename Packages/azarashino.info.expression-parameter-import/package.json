@@ -1,0 +1,13 @@
+{
+  "name": "azarashino.info.expression-parameter-import",
+  "displayName": "Expression Parameter Import",
+  "version": "0.1.0",
+  "unity": "2019.4",
+  "description": "Merge an existing ExpressionParameter into an element of MA Parameter",
+  "vrchatVersion": "2022.1.1",
+  "author": {
+    "name": "Shino Hinaduki",
+    "email": "shino.hinaduki@gmail.com",
+    "url": "https://azarashino.info"
+  }
+}
