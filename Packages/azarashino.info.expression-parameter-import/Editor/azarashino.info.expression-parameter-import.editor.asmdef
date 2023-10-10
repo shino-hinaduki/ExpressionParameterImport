@@ -1,0 +1,22 @@
+{
+    "name": "azarashino.info.expression-parameter-import.editor",
+    "references": [
+        "GUID:3456780c4fb2d324ab9c633d6f1b0ddb",
+        "GUID:5718fb738711cd34ea54e9553040911d",
+        "GUID:62ced99b048af7f4d8dfe4bed8373d76",
+        "GUID:fe747755f7b44e048820525b07f9b956",
+        "GUID:fc900867c0f47cd49b6e2ae4ef907300",
+        "GUID:82bdfc515ba1fb94aa3cae15cdfb798a"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
