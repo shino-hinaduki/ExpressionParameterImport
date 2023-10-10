@@ -1,5 +1,5 @@
 {
-    "name": "VRChatPackageTemplate.Editor",
+    "name": "ExpressionParameterImport.Editor",
     "references": [],
     "includePlatforms": [
         "Editor"
