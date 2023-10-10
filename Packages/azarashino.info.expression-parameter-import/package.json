@@ -5,9 +5,15 @@
   "unity": "2019.4",
   "description": "Merge an existing ExpressionParameter into an element of MA Parameter",
   "vrchatVersion": "2022.1.1",
+  "url": "https://shino-hinaduki.github.io/ExpressionParameterImport/",
   "author": {
     "name": "Shino Hinaduki",
     "email": "shino.hinaduki@gmail.com",
     "url": "https://azarashino.info"
+  },
+  "vpmDependencies":{
+    "com.vrchat.avatars": ">=3.2.0",
+    "nadena.dev.ndmf": ">=1.1.1",
+    "nadena.dev.modular-avatar": ">=1.8.0"
   }
 }
