@@ -34,7 +34,7 @@ namespace azarashino.info.expression_parameter_import.Runtime
         /// <summary>
         /// true if already set
         /// </summary>
-        public bool IsInsufficient => (ExpressionParameters == null);
+        public bool IsInsufficient => ExpressionParameters == null;
         public override string ToString() => $"{nameof(ExpressionParameterImport)}({ExpressionParameters}, {Storategy})";
 
     }
