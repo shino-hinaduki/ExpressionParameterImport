@@ -2,7 +2,7 @@
 using UnityEngine;
 using VRC.SDKBase;
 
-namespace azarashino.info.expression_parameter_import
+namespace azarashino.info.expression_parameter_import.Runtime
 {
     [Serializable]
     public enum ImportStrategy
@@ -15,6 +15,7 @@ namespace azarashino.info.expression_parameter_import
     /// <summary>
     /// Transfer Expression Parameter to MA Parameter
     /// </summary>
+    [AddComponentMenu("Azarashino/Expression Parameter Import")]
     public class ExpressionParameterImport : MonoBehaviour, IEditorOnly
     {
         [Header("Configuration")]
@@ -30,6 +31,10 @@ namespace azarashino.info.expression_parameter_import
         [SerializeField]
         public bool IsDebug = false;
 
+        /// <summary>
+        /// true if already set
+        /// </summary>
+        public bool IsInsufficient => (ExpressionParameters == null);
         public override string ToString() => $"{nameof(ExpressionParameterImport)}({ExpressionParameters}, {Storategy})";
 
     }

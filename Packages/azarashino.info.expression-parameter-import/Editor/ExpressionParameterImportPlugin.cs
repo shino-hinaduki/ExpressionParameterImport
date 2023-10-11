@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using nadena.dev.ndmf;
 using nadena.dev.modular_avatar.core;
-using azarashino.info.expression_parameter_import;
+using azarashino.info.expression_parameter_import.Editor;
+using azarashino.info.expression_parameter_import.Runtime;
 
 [assembly: ExportsPlugin(typeof(ExpressionParameterImportPlugin))]
 
-namespace azarashino.info.expression_parameter_import
+namespace azarashino.info.expression_parameter_import.Editor
 {
     public class ExpressionParameterImportPlugin : Plugin<ExpressionParameterImportPlugin>
     {
@@ -25,7 +26,7 @@ namespace azarashino.info.expression_parameter_import
                         foreach (var exParam in maParamObj.GetComponents<ExpressionParameterImport>())
                         {
                             // Expression Parameters not set
-                            if (exParam.ExpressionParameters == null)
+                            if (exParam.IsInsufficient)
                             {
                                 if (exParam.IsDebug)
                                 {
