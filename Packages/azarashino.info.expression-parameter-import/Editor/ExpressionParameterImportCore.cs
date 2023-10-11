@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
+using ExpressionParameters = VRC.SDK3.Avatars.ScriptableObjects.VRCExpressionParameters;
 using nadena.dev.modular_avatar.core;
 using azarashino.info.expression_parameter_import.Runtime;
-using UnityEditor;
 
 namespace azarashino.info.expression_parameter_import.Editor
 {
@@ -19,18 +21,18 @@ namespace azarashino.info.expression_parameter_import.Editor
         public static (GameObject, ExpressionParameterImport, ModularAvatarParameters)? GetParameterImportTargets(this MenuCommand menuCommand)
         {
             // not ExpressionParameterImport, Parameter not set
-            var exParam = menuCommand.context as ExpressionParameterImport;
-            if (exParam?.IsInsufficient ?? true)
+            var srcParam = menuCommand.context as ExpressionParameterImport;
+            if (srcParam?.IsInsufficient ?? true)
             {
                 return null;
             }
             // not found MA Parameters
-            var maParam = exParam.GetComponent<ModularAvatarParameters>();
+            var maParam = srcParam.GetComponent<ModularAvatarParameters>();
             if (maParam == null)
             {
                 return null;
             }
-            return (exParam.gameObject, exParam, maParam);
+            return (srcParam.gameObject, srcParam, maParam);
         }
 
         /// <summary>
@@ -48,14 +50,102 @@ namespace azarashino.info.expression_parameter_import.Editor
         }
 
         /// <summary>
+        /// Returns whether or not Import is required
+        /// </summary>
+        /// <param name="importStrategy"></param>
+        /// <param name="isDstParamExists"></param>
+        /// <returns></returns>
+        public static bool IsNeedImport(this ImportStrategy importStrategy, bool isDstParamExists)
+        {
+            switch (importStrategy)
+            {
+                case ImportStrategy.ApplyAll:
+                    return true;
+                case ImportStrategy.NoOverwrite:
+                    return !isDstParamExists;
+                case ImportStrategy.OnlyOverwrite:
+                    return isDstParamExists;
+                default:
+                    Debug.LogError($"{importStrategy} is not implemented.");
+                    return false;
+            }
+        }
+
+        /// <summary>
         /// Apply ExpressionParameters to MA Parameters
         /// </summary>
         /// <param name="maParam"></param>
-        /// <param name="exParam"></param>
+        /// <param name="srcParam"></param>
         /// <returns></returns>
-        public static ModularAvatarParameters ImportFrom(this ModularAvatarParameters maParam, ExpressionParameterImport exParam)
+        public static ModularAvatarParameters ImportFrom(this ModularAvatarParameters maParam, ExpressionParameterImport srcParam)
         {
-            // TODO
+            // sweep all entries
+            var exParams = new SerializedObject(srcParam.ExpressionParameters).FindProperty("parameters");
+            for (var srcIndex = 0; srcIndex < exParams.arraySize; srcIndex++)
+            {
+                // parse src param
+                var srcExParam = exParams.GetArrayElementAtIndex(srcIndex);
+
+                var name = srcExParam.FindPropertyRelative("name").stringValue;
+                var valueTypeRaw = srcExParam.FindPropertyRelative("valueType").intValue;
+                var valueType = (ExpressionParameters.ValueType)valueTypeRaw;
+                var saved = srcExParam.FindPropertyRelative("saved").boolValue;
+                var defaultValue = srcExParam.FindPropertyRelative("defaultValue").floatValue;
+                var networkSynced = srcExParam.FindPropertyRelative("networkSynced").boolValue;
+
+                // search dst param
+                var maDstParamIndex = maParam.parameters.FindIndex(x => x.nameOrPrefix == name);
+                var isDstParamExists = maDstParamIndex != -1;
+
+                // decide whether to apply
+                if (!srcParam.Storategy.IsNeedImport(isDstParamExists))
+                {
+                    if (srcParam.IsDebug)
+                    {
+                        Debug.Log($"[{srcParam.gameObject.name}][Skip  ] name={name}, storategy={srcParam.Storategy}, isDstParamExists={isDstParamExists}");
+                    }
+                    continue;
+                }
+
+                if (srcParam.IsDebug)
+                {
+                    Debug.Log($"[{srcParam.gameObject.name}][Import] name={name}, storategy={srcParam.Storategy}, isDstParamExists={isDstParamExists}");
+                }
+
+                // add new
+                if (!isDstParamExists)
+                {
+                    maParam.parameters.Add(new ParameterConfig());
+                    maDstParamIndex = maParam.parameters.Count - 1;
+                }
+                // copy config (struct copy)
+                var dstMaParam = maParam.parameters[maDstParamIndex];
+                // configure
+                dstMaParam.nameOrPrefix = name;
+                dstMaParam.remapTo = name;
+                dstMaParam.isPrefix = false;
+                switch (valueType)
+                {
+                    case ExpressionParameters.ValueType.Int:
+                        dstMaParam.syncType = ParameterSyncType.Int;
+                        break;
+                    case ExpressionParameters.ValueType.Float:
+                        dstMaParam.syncType = ParameterSyncType.Float;
+                        break;
+                    case ExpressionParameters.ValueType.Bool:
+                        dstMaParam.syncType = ParameterSyncType.Bool;
+                        break;
+                    default:
+                        Debug.LogError($"Invalid ValueType {valueType}");
+                        return maParam;
+                }
+                dstMaParam.localOnly = !networkSynced;
+                dstMaParam.defaultValue = defaultValue;
+                dstMaParam.saved = saved;
+                // apply
+                maParam.parameters[maDstParamIndex] = dstMaParam; // struct copy
+
+            }
             return maParam;
         }
     }

@@ -23,8 +23,11 @@ namespace azarashino.info.expression_parameter_import.Editor
                 return;
             }
 
-            var (gameObject, exParam, maParam) = target.Value;
+            // main process
+            var (gameObject, srcParam, maParam) = target.Value;
             gameObject.MakeBackup();
+            maParam.ImportFrom(srcParam);
+            GameObject.DestroyImmediate(srcParam); // remove src component
         }
 
         [MenuItem("CONTEXT/ExpressionParameterImport/Azarashino/Bake to MA Parameters", validate = true)]
