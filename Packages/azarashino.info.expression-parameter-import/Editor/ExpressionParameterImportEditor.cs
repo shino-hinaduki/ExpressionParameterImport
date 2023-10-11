@@ -13,7 +13,7 @@ namespace azarashino.info.expression_parameter_import.Editor
     [CustomEditor(typeof(ExpressionParameterImport))]
     public class ExpressionParameterImportEditor : UnityEditor.Editor
     {
-        [MenuItem("CONTEXT/ExpressionParameterImport/Azarashino/Bake to MA Parameters")]
+        [MenuItem("CONTEXT/ExpressionParameterImport/Bake to MA Parameters")]
         public static void Bake(MenuCommand menuCommand)
         {
             var target = menuCommand.GetParameterImportTargets();
@@ -25,12 +25,14 @@ namespace azarashino.info.expression_parameter_import.Editor
 
             // main process
             var (gameObject, srcParam, maParam) = target.Value;
-            gameObject.MakeBackup();
+            var backupGameObject = gameObject.MakeBackup();
+            Undo.RegisterCreatedObjectUndo(backupGameObject, $"Bake to {gameObject.name}"); // for undo MakeBackup
+            Undo.RegisterCompleteObjectUndo(maParam, $"Bake to {gameObject.name}"); // for undo ImportFrom
             maParam.ImportFrom(srcParam);
-            GameObject.DestroyImmediate(srcParam); // remove src component
+            Undo.DestroyObjectImmediate(srcParam); // remove src component & record undo
         }
 
-        [MenuItem("CONTEXT/ExpressionParameterImport/Azarashino/Bake to MA Parameters", validate = true)]
+        [MenuItem("CONTEXT/ExpressionParameterImport/Bake to MA Parameters", validate = true)]
         public static bool BakeValidation(MenuCommand menuCommand)
         {
             return menuCommand.GetParameterImportTargets() != null;
