@@ -2,7 +2,11 @@
     "name": "azarashino.info.expression-parameter-import.Tests.EditMode",
     "references": [
         "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner"
+        "UnityEditor.TestRunner",
+        "azarashino.info.expression-parameter-import.editor",
+        "azarashino.info.expression-parameter-import.runtime",
+        "nadena.dev.modular-avatar.core",
+        "VRC.SDK3A"
     ],
     "includePlatforms": [
         "Editor"

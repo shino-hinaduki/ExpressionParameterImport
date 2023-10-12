@@ -3,26 +3,63 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityEditor;
 
-namespace Tests
+using nadena.dev.modular_avatar.core;
+using azarashino.info.expression_parameter_import.Runtime;
+using azarashino.info.expression_parameter_import.Editor;
+
+namespace azarashino.info.expression_parameter_import.Tests.Editor
 {
     public class ExpressionParameterImportCoreTest
     {
-        // A Test behaves as an ordinary method
+        internal class ExampleScriptableObject : ScriptableObject { }
+
         [Test]
-        public void ExpressionParameterImportCoreTestSimplePasses()
+        public void GetParameterImportTargetsNull()
         {
-            // Use the Assert class to test conditions
+            var menuCommand = new MenuCommand(null);
+            Assert.That(menuCommand.GetParameterImportTargets(), Is.Null);
         }
 
-        // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
-        // `yield return null;` to skip a frame.
-        [UnityTest]
-        public IEnumerator ExpressionParameterImportCoreWithEnumeratorPasses()
+        [Test]
+        public void GetParameterImportTargetsOnlyExParam1()
         {
-            // Use the Assert class to test conditions.
-            // Use yield to skip a frame.
-            yield return null;
+            var go = new GameObject();
+            go.AddComponent<ExpressionParameterImport>();
+
+            var menuCommand = new MenuCommand(go.GetComponent<ExpressionParameterImport>());
+            Assert.That(menuCommand.GetParameterImportTargets(), Is.Null);
+        }
+
+        [Test]
+        public void GetParameterImportTargetsOnlyExParam2()
+        {
+            var go = new GameObject();
+            go.AddComponent<ExpressionParameterImport>();
+            go.GetComponent<ExpressionParameterImport>().ExpressionParameters = ScriptableObject.CreateInstance<ExampleScriptableObject>();
+
+            var menuCommand = new MenuCommand(go.GetComponent<ExpressionParameterImport>());
+            Assert.That(menuCommand.GetParameterImportTargets(), Is.Null);
+        }
+
+
+        [Test]
+        public void GetParameterImportTargetsReady()
+        {
+            var go = new GameObject();
+            go.AddComponent<ExpressionParameterImport>();
+            go.GetComponent<ExpressionParameterImport>().ExpressionParameters = ScriptableObject.CreateInstance<ExampleScriptableObject>();
+            go.AddComponent<ModularAvatarParameters>();
+
+            var menuCommand = new MenuCommand(go.GetComponent<ExpressionParameterImport>());
+            var dst = menuCommand.GetParameterImportTargets();
+            Assert.That(dst, Is.Not.Null);
+
+            var (gameObject, srcParam, maParam) = dst.Value;
+            Assert.That(gameObject, Is.EqualTo(go));
+            Assert.That(srcParam, Is.EqualTo(go.GetComponent<ExpressionParameterImport>()));
+            Assert.That(maParam, Is.EqualTo(go.GetComponent<ModularAvatarParameters>()));
         }
     }
 }
