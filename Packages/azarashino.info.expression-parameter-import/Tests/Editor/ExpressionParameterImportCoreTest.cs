@@ -61,5 +61,20 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
             Assert.That(srcParam, Is.EqualTo(go.GetComponent<ExpressionParameterImport>()));
             Assert.That(maParam, Is.EqualTo(go.GetComponent<ModularAvatarParameters>()));
         }
+
+        [Test]
+        public void MakeBackupTest()
+        {
+            var srcGameObject = new GameObject();
+            srcGameObject.AddComponent<ExpressionParameterImport>();
+            srcGameObject.GetComponent<ExpressionParameterImport>().ExpressionParameters = ScriptableObject.CreateInstance<ExampleScriptableObject>();
+            srcGameObject.AddComponent<ModularAvatarParameters>();
+
+            var dstGameObject = srcGameObject.MakeBackup(namePrefix: "MakeBackUpTest_");
+            Assert.That(dstGameObject, Is.Not.EqualTo(srcGameObject));
+            Assert.That(dstGameObject.name, Is.EqualTo($"MakeBackUpTest_{srcGameObject.name}"));
+            Assert.That(dstGameObject.activeSelf, Is.False);
+        }
+
     }
 }
