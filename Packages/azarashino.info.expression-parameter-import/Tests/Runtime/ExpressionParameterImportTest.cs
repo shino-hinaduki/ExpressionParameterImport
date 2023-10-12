@@ -4,25 +4,20 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Tests
+using azarashino.info.expression_parameter_import.Runtime;
+
+namespace azarashino.info.expression_parameter_import.Tests.Runtime
 {
     public class ExpressionParameterImportTest
     {
-        // A Test behaves as an ordinary method
         [Test]
-        public void ExpressionParameterImportTestSimplePasses()
+        public void IsInsufficientTest()
         {
-            // Use the Assert class to test conditions
-        }
+            var dut = new ExpressionParameterImport();
+            Assert.That(dut.IsInsufficient, Is.True); // expression parameters not set
 
-        // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
-        // `yield return null;` to skip a frame.
-        [UnityTest]
-        public IEnumerator ExpressionParameterImportTestWithEnumeratorPasses()
-        {
-            // Use the Assert class to test conditions.
-            // Use yield to skip a frame.
-            yield return null;
+            dut.ExpressionParameters = new ScriptableObject();
+            Assert.That(dut.IsInsufficient, Is.False);
         }
     }
 }
