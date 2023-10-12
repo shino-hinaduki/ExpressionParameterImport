@@ -16,14 +16,14 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
         internal class ExampleScriptableObject : ScriptableObject { }
 
         [Test]
-        public void GetParameterImportTargetsNull()
+        public void GetParameterImportTargetsNullTest()
         {
             var menuCommand = new MenuCommand(null);
             Assert.That(menuCommand.GetParameterImportTargets(), Is.Null);
         }
 
         [Test]
-        public void GetParameterImportTargetsOnlyExParam1()
+        public void GetParameterImportTargetsOnlyExParamTest1()
         {
             var go = new GameObject();
             go.AddComponent<ExpressionParameterImport>();
@@ -33,7 +33,7 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
         }
 
         [Test]
-        public void GetParameterImportTargetsOnlyExParam2()
+        public void GetParameterImportTargetsOnlyExParamTest2()
         {
             var go = new GameObject();
             go.AddComponent<ExpressionParameterImport>();
@@ -45,7 +45,7 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
 
 
         [Test]
-        public void GetParameterImportTargetsReady()
+        public void GetParameterImportTargetsReadyTest()
         {
             var go = new GameObject();
             go.AddComponent<ExpressionParameterImport>();
