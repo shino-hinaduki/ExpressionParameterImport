@@ -4,7 +4,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Tests
+namespace azarashino.info.expression_parameter_import.Tests.Editor
 {
     public class ExpressionParameterImportEditorTest
     {
