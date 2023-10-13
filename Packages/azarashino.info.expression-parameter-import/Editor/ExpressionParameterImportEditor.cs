@@ -16,18 +16,23 @@ namespace azarashino.info.expression_parameter_import.Editor
         [MenuItem("CONTEXT/ExpressionParameterImport/Bake to MA Parameters")]
         public static void Bake(MenuCommand menuCommand)
         {
-            var target = menuCommand.GetParameterImportTargets();
-            if (target == null)
+            var srcParam = menuCommand.context as ExpressionParameterImport;
+            if (srcParam?.IsInsufficient ?? true)
             {
                 Debug.LogWarning($"invalid target. aborted.");
                 return;
             }
-
+            // Get or create MA Parameters
+            var maParam = srcParam.gameObject.GetComponent<ModularAvatarParameters>(); // DisallowMultipleComponent
+            if (maParam == null)
+            {
+                maParam = Undo.AddComponent<ModularAvatarParameters>(srcParam.gameObject);
+            }
             // main process
-            var (gameObject, srcParam, maParam) = target.Value;
+            var gameObject = srcParam.gameObject;
             var backupGameObject = gameObject.MakeBackup();
-            Undo.RegisterCreatedObjectUndo(backupGameObject, $"Bake to {gameObject.name}"); // for undo MakeBackup
-            Undo.RegisterCompleteObjectUndo(maParam, $"Bake to {gameObject.name}"); // for undo ImportFrom
+            Undo.RegisterCreatedObjectUndo(backupGameObject, $"Bake ExParams to {gameObject.name}"); // for undo MakeBackup
+            Undo.RegisterCompleteObjectUndo(maParam, $"Bake ExParams to {gameObject.name}"); // for undo ImportFrom
             maParam.ImportFrom(srcParam);
             Undo.DestroyObjectImmediate(srcParam); // remove src component & record undo
         }
@@ -35,7 +40,8 @@ namespace azarashino.info.expression_parameter_import.Editor
         [MenuItem("CONTEXT/ExpressionParameterImport/Bake to MA Parameters", validate = true)]
         public static bool BakeValidation(MenuCommand menuCommand)
         {
-            return menuCommand.GetParameterImportTargets() != null;
+            var srcParam = menuCommand.context as ExpressionParameterImport;
+            return !(srcParam?.IsInsufficient ?? true);
         }
     }
 }

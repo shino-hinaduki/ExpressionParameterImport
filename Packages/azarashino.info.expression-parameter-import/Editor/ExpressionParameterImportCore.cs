@@ -12,29 +12,6 @@ namespace azarashino.info.expression_parameter_import.Editor
 {
     public static class ExpressionParameterImportCore
     {
-
-        /// <summary>
-        /// Returns a target in Tuple only when the target selected in Menu is available for processing
-        /// </summary>
-        /// <param name="menuCommand">target object</param>
-        /// <returns></returns>
-        public static (GameObject, ExpressionParameterImport, ModularAvatarParameters)? GetParameterImportTargets(this MenuCommand menuCommand)
-        {
-            // not ExpressionParameterImport, Parameter not set
-            var srcParam = menuCommand.context as ExpressionParameterImport;
-            if (srcParam?.IsInsufficient ?? true)
-            {
-                return null;
-            }
-            // not found MA Parameters
-            var maParam = srcParam.GetComponent<ModularAvatarParameters>();
-            if (maParam == null)
-            {
-                return null;
-            }
-            return (srcParam.gameObject, srcParam, maParam);
-        }
-
         /// <summary>
         /// Create Backup
         /// </summary>

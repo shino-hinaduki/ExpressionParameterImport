@@ -20,16 +20,20 @@ namespace azarashino.info.expression_parameter_import.Editor
                 .BeforePlugin("nadena.dev.modular-avatar")
                 .Run("Import ExpressionParameters", ctx =>
                 {
-                    foreach (var maParam in ctx.AvatarRootObject.GetComponentsInChildren<ModularAvatarParameters>())
+                    foreach (var srcParam in ctx.AvatarRootObject.GetComponentsInChildren<ExpressionParameterImport>())
                     {
-                        // If multiple components are assigned, process them in the order of Inspector display
-                        foreach (var srcParam in maParam.GetComponents<ExpressionParameterImport>())
+                        // Expression Parameters not set
+                        if (srcParam.IsInsufficient) continue;
+                        // Get or create MA Parameters
+                        var maParam = srcParam.gameObject.GetComponent<ModularAvatarParameters>(); // DisallowMultipleComponent
+                        if (maParam == null)
                         {
-                            // Expression Parameters not set
-                            if (srcParam.IsInsufficient) continue;
-                            // apply params
-                            maParam.ImportFrom(srcParam);
+                            maParam = srcParam.gameObject.AddComponent<ModularAvatarParameters>();
                         }
+                        // apply params
+                        maParam.ImportFrom(srcParam);
+                        // Removed for possible appearance as noise of unknown identification from other tools
+                        Object.Destroy(srcParam);
                     }
                 });
         }
