@@ -1,12 +1,13 @@
 {
     "name": "azarashino.info.expression-parameter-import.Tests.EditMode",
     "references": [
-        "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner",
-        "azarashino.info.expression-parameter-import.editor",
-        "azarashino.info.expression-parameter-import.runtime",
-        "nadena.dev.modular-avatar.core",
-        "VRC.SDK3A"
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:0acc523941302664db1f4e527237feb3",
+        "GUID:6939540d08c621342b92cdcc40c770d1",
+        "GUID:82bdfc515ba1fb94aa3cae15cdfb798a",
+        "GUID:fc900867c0f47cd49b6e2ae4ef907300",
+        "GUID:3456780c4fb2d324ab9c633d6f1b0ddb",
+        "GUID:5718fb738711cd34ea54e9553040911d"
     ],
     "includePlatforms": [
         "Editor"
