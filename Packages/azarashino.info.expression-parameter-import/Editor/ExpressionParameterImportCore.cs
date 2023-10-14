@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-using ExpressionParameters = VRC.SDK3.Avatars.ScriptableObjects.VRCExpressionParameters;
+using VRC.SDK3.Avatars.ScriptableObjects;
 using nadena.dev.modular_avatar.core;
 using azarashino.info.expression_parameter_import.Runtime;
 
@@ -56,22 +56,18 @@ namespace azarashino.info.expression_parameter_import.Editor
         /// <returns></returns>
         public static ModularAvatarParameters ImportFrom(this ModularAvatarParameters maParam, ExpressionParameterImport srcParam)
         {
-            // sweep all entries
-            var exParams = new SerializedObject(srcParam.ExpressionParameters).FindProperty("parameters");
-            for (var srcIndex = 0; srcIndex < exParams.arraySize; srcIndex++)
+            // invalid src
+            if (srcParam?.IsInsufficient ?? true)
             {
-                // parse src param
-                var srcExParam = exParams.GetArrayElementAtIndex(srcIndex);
+                Debug.Log($"[{srcParam.gameObject.name}][skip] IsInsufficient");
+                return maParam;
+            }
 
-                var name = srcExParam.FindPropertyRelative("name").stringValue;
-                var valueTypeRaw = srcExParam.FindPropertyRelative("valueType").intValue;
-                var valueType = (ExpressionParameters.ValueType)valueTypeRaw;
-                var saved = srcExParam.FindPropertyRelative("saved").boolValue;
-                var defaultValue = srcExParam.FindPropertyRelative("defaultValue").floatValue;
-                var networkSynced = srcExParam.FindPropertyRelative("networkSynced").boolValue;
-
+            // sweep all entries
+            foreach (var srcExParam in srcParam.SrcExpressionParameters.parameters)
+            {
                 // search dst param
-                var maDstParamIndex = maParam.parameters.FindIndex(x => x.nameOrPrefix == name);
+                var maDstParamIndex = maParam.parameters.FindIndex(x => x.nameOrPrefix == srcExParam.name);
                 var isDstParamExists = maDstParamIndex != -1;
 
                 // decide whether to apply
@@ -79,14 +75,14 @@ namespace azarashino.info.expression_parameter_import.Editor
                 {
                     if (srcParam.IsDebug)
                     {
-                        Debug.Log($"[{srcParam.gameObject.name}][Skip  ] name={name}, storategy={srcParam.Storategy}, isDstParamExists={isDstParamExists}");
+                        Debug.Log($"[{srcParam.gameObject.name}][Skip] name={srcExParam.name}, storategy={srcParam.Storategy}, isDstParamExists={isDstParamExists}");
                     }
                     continue;
                 }
 
                 if (srcParam.IsDebug)
                 {
-                    Debug.Log($"[{srcParam.gameObject.name}][Import] name={name}, storategy={srcParam.Storategy}, isDstParamExists={isDstParamExists}");
+                    Debug.Log($"[{srcParam.gameObject.name}][Import] name={srcExParam.name}, storategy={srcParam.Storategy}, isDstParamExists={isDstParamExists}");
                 }
 
                 // add new
@@ -98,27 +94,27 @@ namespace azarashino.info.expression_parameter_import.Editor
                 // copy config (struct copy)
                 var dstMaParam = maParam.parameters[maDstParamIndex];
                 // configure
-                dstMaParam.nameOrPrefix = name;
-                dstMaParam.remapTo = name;
+                dstMaParam.nameOrPrefix = srcExParam.name;
+                dstMaParam.remapTo = srcExParam.name;
                 dstMaParam.isPrefix = false;
-                switch (valueType)
+                switch (srcExParam.valueType)
                 {
-                    case ExpressionParameters.ValueType.Int:
+                    case VRCExpressionParameters.ValueType.Int:
                         dstMaParam.syncType = ParameterSyncType.Int;
                         break;
-                    case ExpressionParameters.ValueType.Float:
+                    case VRCExpressionParameters.ValueType.Float:
                         dstMaParam.syncType = ParameterSyncType.Float;
                         break;
-                    case ExpressionParameters.ValueType.Bool:
+                    case VRCExpressionParameters.ValueType.Bool:
                         dstMaParam.syncType = ParameterSyncType.Bool;
                         break;
                     default:
-                        Debug.LogError($"Invalid ValueType {valueType}");
+                        Debug.LogError($"Invalid ValueType {srcExParam.valueType}");
                         return maParam;
                 }
-                dstMaParam.localOnly = !networkSynced;
-                dstMaParam.defaultValue = defaultValue;
-                dstMaParam.saved = saved;
+                dstMaParam.localOnly = !srcExParam.networkSynced;
+                dstMaParam.defaultValue = srcExParam.defaultValue;
+                dstMaParam.saved = srcExParam.saved;
                 // apply
                 maParam.parameters[maDstParamIndex] = dstMaParam; // struct copy
 
