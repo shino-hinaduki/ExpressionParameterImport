@@ -62,3 +62,7 @@ crashlytics-build.properties
 Assets/PackageMakerWindowData.asset*
 .idea
 .vscode
+
+# Test generated
+Assets/InitTestScene*
+
