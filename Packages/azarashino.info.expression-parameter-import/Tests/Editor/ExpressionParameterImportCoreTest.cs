@@ -10,6 +10,7 @@ using ExpressionParameters = VRC.SDK3.Avatars.ScriptableObjects.VRCExpressionPar
 using nadena.dev.modular_avatar.core;
 using azarashino.info.expression_parameter_import.Runtime;
 using azarashino.info.expression_parameter_import.Editor;
+using System.Text;
 
 namespace azarashino.info.expression_parameter_import.Tests.Editor
 {
@@ -40,7 +41,12 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
 
             public ModularAvatarParameters ExpectMaParam { get; set; }
 
-            public bool IsOk(ModularAvatarParameters actMaParam) => Enumerable.SequenceEqual(actMaParam.parameters, ExpectMaParam.parameters);
+            public void DoImport()
+            {
+                SrcMaParam.ImportFrom(SrcExParam);
+            }
+
+            public bool IsOk => Enumerable.SequenceEqual(SrcMaParam.parameters, ExpectMaParam.parameters);
         }
         public static IEnumerable<ImportFromTestData> ImportFromTestDatas
         {
@@ -76,10 +82,12 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
             }
         }
 
-        [TestCaseSource(nameof(ImportFromTestData))]
+        [Test]
+        [TestCaseSource(nameof(ImportFromTestDatas))]
         public void ImportFromTest(ImportFromTestData testData)
         {
-            Assert.That(testData.IsOk(testData.SrcMaParam.ImportFrom(testData.SrcExParam)), Is.True);
+            testData.DoImport();
+            Assert.That(testData.IsOk, Is.True);
         }
 
     }
