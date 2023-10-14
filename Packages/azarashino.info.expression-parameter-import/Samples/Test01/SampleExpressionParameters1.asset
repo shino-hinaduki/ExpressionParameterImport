@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: SampleExpressionParameters1
   m_EditorClassIdentifier: 
   parameters:
-  - name: Hoge
+  - name: Param1-1
     valueType: 1
     saved: 1
     defaultValue: 0.1
     networkSynced: 1
-  - name: Fuga
+  - name: Param1-2
     valueType: 2
     saved: 0
     defaultValue: 1

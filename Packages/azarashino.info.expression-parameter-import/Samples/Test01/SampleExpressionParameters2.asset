@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: SampleExpressionParameters2
   m_EditorClassIdentifier: 
   parameters:
-  - name: Hoge
+  - name: Param2-1
     valueType: 2
     saved: 0
     defaultValue: 0
     networkSynced: 1
-  - name: Piyo
+  - name: Param2-2
     valueType: 1
     saved: 0
     defaultValue: 0.5
