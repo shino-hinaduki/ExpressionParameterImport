@@ -44,13 +44,7 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
         }
 
 
-        public static IEnumerable<ImportFromTestData> ImportFromTestDatas
-        {
-            get
-            {
-                yield break; // TODO
-            }
-        }
+        public static IEnumerable<ImportFromTestData> ImportFromTestDatas => ExpressionParameterImportTestDefs.ImportFromTestDatas;
 
         [Test]
         [TestCaseSource(nameof(ImportFromTestDatas))]
