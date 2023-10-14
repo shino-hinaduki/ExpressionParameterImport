@@ -2,16 +2,16 @@
     "name": "azarashino.info.expression-parameter-import.Tests.Runtime",
     "references": [
         "GUID:27619889b8ba8c24980f49ee34dbb44a",
-        "GUID:82bdfc515ba1fb94aa3cae15cdfb798a",
-        "GUID:5718fb738711cd34ea54e9553040911d",
-        "GUID:3456780c4fb2d324ab9c633d6f1b0ddb"
+        "GUID:82bdfc515ba1fb94aa3cae15cdfb798a"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "nunit.framework.dll"
+        "nunit.framework.dll",
+        "VRCSDKBase.dll",
+        "VRCSDK3A.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [

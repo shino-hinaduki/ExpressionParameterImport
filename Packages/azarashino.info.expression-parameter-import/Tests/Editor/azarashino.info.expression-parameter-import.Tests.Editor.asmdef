@@ -1,13 +1,12 @@
 {
-    "name": "azarashino.info.expression-parameter-import.Tests.EditMode",
+    "name": "azarashino.info.expression-parameter-import.Tests.Editor",
     "references": [
         "GUID:27619889b8ba8c24980f49ee34dbb44a",
         "GUID:0acc523941302664db1f4e527237feb3",
-        "GUID:6939540d08c621342b92cdcc40c770d1",
         "GUID:82bdfc515ba1fb94aa3cae15cdfb798a",
-        "GUID:fc900867c0f47cd49b6e2ae4ef907300",
-        "GUID:3456780c4fb2d324ab9c633d6f1b0ddb",
-        "GUID:5718fb738711cd34ea54e9553040911d"
+        "GUID:6939540d08c621342b92cdcc40c770d1",
+        "GUID:62ced99b048af7f4d8dfe4bed8373d76",
+        "GUID:fc900867c0f47cd49b6e2ae4ef907300"
     ],
     "includePlatforms": [
         "Editor"
@@ -16,7 +15,9 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "nunit.framework.dll"
+        "nunit.framework.dll",
+        "VRCSDKBase.dll",
+        "VRCSDK3A.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [

@@ -17,7 +17,6 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
     {
         internal class ExampleScriptableObject : ScriptableObject
         {
-
         }
 
         [Test]
