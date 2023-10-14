@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Text;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -10,7 +11,7 @@ using VRC.SDK3.Avatars.ScriptableObjects;
 using nadena.dev.modular_avatar.core;
 using azarashino.info.expression_parameter_import.Runtime;
 using azarashino.info.expression_parameter_import.Editor;
-using System.Text;
+using static azarashino.info.expression_parameter_import.Tests.Editor.ExpressionParameterImportTestDefs;
 
 namespace azarashino.info.expression_parameter_import.Tests.Editor
 {
@@ -30,25 +31,19 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
             Assert.That(dstGameObject.activeSelf, Is.False);
         }
 
-        public class ImportFromTestData
+        [Test]
+        [TestCase(ImportStrategy.ApplyAll, false, ExpectedResult = true)]
+        [TestCase(ImportStrategy.ApplyAll, true, ExpectedResult = true)]
+        [TestCase(ImportStrategy.NoOverwrite, false, ExpectedResult = true)]
+        [TestCase(ImportStrategy.NoOverwrite, true, ExpectedResult = false)]
+        [TestCase(ImportStrategy.OnlyOverwrite, false, ExpectedResult = false)]
+        [TestCase(ImportStrategy.OnlyOverwrite, true, ExpectedResult = true)]
+        public bool IsNeedImportTest(ImportStrategy importStrategy, bool isDstParamExists)
         {
-            public GameObject SrcGameObject { get; set; }
-            public ModularAvatarParameters ExpectMaParam { get; set; }
-
-            public ModularAvatarParameters SrcMaParam => SrcGameObject?.GetComponent<ModularAvatarParameters>();
-            public IEnumerable<ExpressionParameterImport> SrcExParams => SrcGameObject?.GetComponents<ExpressionParameterImport>();
-
-
-            public void DoImport()
-            {
-                foreach (var srcExParam in SrcExParams)
-                {
-                    SrcMaParam.ImportFrom(srcExParam);
-                }
-            }
-
-            public bool IsOk => Enumerable.SequenceEqual(SrcMaParam.parameters, ExpectMaParam.parameters);
+            return importStrategy.IsNeedImport(isDstParamExists);
         }
+
+
         public static IEnumerable<ImportFromTestData> ImportFromTestDatas
         {
             get
