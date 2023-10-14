@@ -4,14 +4,13 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
+using VRC.SDK3.Avatars.ScriptableObjects;
 using azarashino.info.expression_parameter_import.Runtime;
 
 namespace azarashino.info.expression_parameter_import.Tests.Runtime
 {
     public class ExpressionParameterImportTest
     {
-        internal class ExampleScriptableObject : ScriptableObject { }
-
         [Test]
         public void IsInsufficientTest()
         {
@@ -23,7 +22,7 @@ namespace azarashino.info.expression_parameter_import.Tests.Runtime
             // expression parameters not set
             Assert.That(dut.IsInsufficient, Is.True);
             // expression parameters set
-            dut.ExpressionParameters = ScriptableObject.CreateInstance<ExampleScriptableObject>();
+            dut.SrcExpressionParameters = new VRCExpressionParameters();
             Assert.That(dut.IsInsufficient, Is.False);
         }
     }

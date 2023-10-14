@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEditor;
 
-using ExpressionParameters = VRC.SDK3.Avatars.ScriptableObjects.VRCExpressionParameters;
+using VRC.SDK3.Avatars.ScriptableObjects;
 using nadena.dev.modular_avatar.core;
 using azarashino.info.expression_parameter_import.Runtime;
 using azarashino.info.expression_parameter_import.Editor;
@@ -16,16 +16,12 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
 {
     public class ExpressionParameterImportCoreTest
     {
-        internal class ExampleScriptableObject : ScriptableObject
-        {
-        }
-
         [Test]
         public void MakeBackupTest()
         {
             var srcGameObject = new GameObject();
             srcGameObject.AddComponent<ExpressionParameterImport>();
-            srcGameObject.GetComponent<ExpressionParameterImport>().ExpressionParameters = ScriptableObject.CreateInstance<ExampleScriptableObject>();
+            srcGameObject.GetComponent<ExpressionParameterImport>().SrcExpressionParameters = new VRCExpressionParameters();
             srcGameObject.AddComponent<ModularAvatarParameters>();
 
             var dstGameObject = srcGameObject.MakeBackup(namePrefix: "MakeBackUpTest_");
@@ -36,14 +32,19 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
 
         public class ImportFromTestData
         {
-            public ModularAvatarParameters SrcMaParam { get; set; }
-            public ExpressionParameterImport SrcExParam { get; set; }
-
+            public GameObject SrcGameObject { get; set; }
             public ModularAvatarParameters ExpectMaParam { get; set; }
+
+            public ModularAvatarParameters SrcMaParam => SrcGameObject?.GetComponent<ModularAvatarParameters>();
+            public IEnumerable<ExpressionParameterImport> SrcExParams => SrcGameObject?.GetComponents<ExpressionParameterImport>();
+
 
             public void DoImport()
             {
-                SrcMaParam.ImportFrom(SrcExParam);
+                foreach (var srcExParam in SrcExParams)
+                {
+                    SrcMaParam.ImportFrom(srcExParam);
+                }
             }
 
             public bool IsOk => Enumerable.SequenceEqual(SrcMaParam.parameters, ExpectMaParam.parameters);
@@ -52,33 +53,7 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
         {
             get
             {
-                yield return new ImportFromTestData()
-                {
-                    SrcMaParam = new ModularAvatarParameters()
-                    {
-                        parameters = new List<ParameterConfig>() {
-                            new ParameterConfig() {
-                            },
-                        }
-                    },
-                    SrcExParam = new ExpressionParameterImport()
-                    {
-                        Storategy = ImportStrategy.ApplyAll,
-                        ExpressionParameters = new ExpressionParameters()
-                        {
-                            parameters = new ExpressionParameters.Parameter[] {
-                            }
-                        }
-                    },
-                    ExpectMaParam = new ModularAvatarParameters()
-                    {
-                        parameters = new List<ParameterConfig>() {
-                            new ParameterConfig() {
-                            },
-                        }
-                    },
-
-                };
+                yield break; // TODO
             }
         }
 
