@@ -26,6 +26,13 @@ jobs:
           key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
             Library-
+      # copy project files (refs. https://github.com/game-ci/unity-test-runner/issues/223)
+      - name: copy dir to new dir
+        run: |
+          pwd
+          folderName=$(echo "${PWD##*/}")
+          rsync -r "$GITHUB_WORKSPACE" "copiedProject" 
+          ls -F "copiedProject/$folderName"
       # test
       - uses: game-ci/unity-test-runner@v3
         id: tests
@@ -33,6 +40,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           packageMode: true
+          projectPath: 'copiedProject'
           unityVersion: ${{ matrix.unityVersion }}
           testMode: ${{ matrix.testMode }}
           artifactsPath: ${{ matrix.testMode }}-artifacts
