@@ -65,4 +65,5 @@ Assets/PackageMakerWindowData.asset*
 
 # Test generated
 Assets/InitTestScene*
-
+testrunner_batch_log*
+testrunner_batch_result*
