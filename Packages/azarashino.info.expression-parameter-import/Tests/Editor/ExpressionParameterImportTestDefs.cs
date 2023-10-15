@@ -19,56 +19,74 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
     {
         public class ImportFromTestData
         {
-            public GameObject SrcGameObject { get; set; }
-            public List<ParameterConfig> ExpectMaParams { get; set; }
+            #region Test Input
+            public List<ParameterConfig> TestSrcMaParams { get; set; }
+            public List<VRCExpressionParameters.Parameter> TestSrcExParamDatas { get; set; }
+            public ImportStrategy TestImportStrategy { get; set; }
+            public IEnumerable<ParameterConfig> TestExpectMaParams { get; set; }
+            #endregion
 
-            public ModularAvatarParameters SrcMaParam => SrcGameObject?.GetComponent<ModularAvatarParameters>();
-            public IEnumerable<ExpressionParameterImport> SrcExParams => SrcGameObject?.GetComponents<ExpressionParameterImport>();
+            #region Test Internal
+            internal GameObject _srcGameObject { get; set; }
+            internal List<ParameterConfig> _expectMaParams { get; set; }
+
+            internal ModularAvatarParameters _srcMaParam => _srcGameObject?.GetComponent<ModularAvatarParameters>();
+            internal IEnumerable<ExpressionParameterImport> _srcExParams => _srcGameObject?.GetComponents<ExpressionParameterImport>();
+            #endregion
 
             /// <summary>
-            /// テストデータ生成。パラメータだけに専念できるようにした
+            /// テスト用のGameObjectやParameter中身を生成する
+            /// remark: 事前(CaseSourceとして、もしくはSetUpで) GameObject作ると、TestCaseSourceで取り出したときにはDisposeされていたため、テスト関数に入ってから生成するようにした
             /// </summary>
             /// <param name="srcMaParams"></param>
             /// <param name="srcExParamDatas"></param>
             /// <returns></returns>
-            public static ImportFromTestData Create(IEnumerable<ParameterConfig> srcMaParams, IEnumerable<VRCExpressionParameters.Parameter> srcExParamDatas, IEnumerable<ParameterConfig> expectMaParams)
+            public void Initialize()
             {
-                var data = new ImportFromTestData();
-                data.SrcGameObject = new GameObject();
+                this._srcGameObject = new GameObject();
 
-                var maParam = data.SrcGameObject.AddComponent<ModularAvatarParameters>();
-                maParam.parameters = (srcMaParams ?? Enumerable.Empty<ParameterConfig>()).ToList();
+                var maParam = this._srcGameObject.AddComponent<ModularAvatarParameters>();
+                maParam.parameters = (TestSrcMaParams ?? Enumerable.Empty<ParameterConfig>()).ToList();
 
-                var srcParam = data.SrcGameObject.AddComponent<ExpressionParameterImport>();
-                srcParam.SrcExpressionParameters = new VRCExpressionParameters
-                {
-                    parameters = (srcExParamDatas ?? Enumerable.Empty<VRCExpressionParameters.Parameter>()).ToArray()
-                };
+                var srcParam = this._srcGameObject.AddComponent<ExpressionParameterImport>();
+                srcParam.Storategy = TestImportStrategy;
+                srcParam.SrcExpressionParameters = ScriptableObject.CreateInstance<VRCExpressionParameters>();
+                srcParam.SrcExpressionParameters.parameters = (TestSrcExParamDatas ?? Enumerable.Empty<VRCExpressionParameters.Parameter>()).ToArray();
 
-                data.ExpectMaParams = (expectMaParams ?? Enumerable.Empty<ParameterConfig>()).ToList();
-
-                return data;
+                this._expectMaParams = (TestExpectMaParams ?? Enumerable.Empty<ParameterConfig>()).ToList();
             }
-
 
             public void DoImport()
             {
-                foreach (var srcExParam in SrcExParams)
+                if (_srcGameObject == null)
                 {
-                    SrcMaParam.ImportFrom(srcExParam);
+                    this.Initialize();
+                }
+
+                foreach (var srcExParam in _srcExParams)
+                {
+                    _srcMaParam.ImportFrom(srcExParam);
                 }
             }
 
-            public bool IsOk => Enumerable.SequenceEqual(SrcMaParam.parameters, ExpectMaParams);
+            public bool IsOk => Enumerable.SequenceEqual(_srcMaParam.parameters, _expectMaParams);
         }
         public static IEnumerable<ImportFromTestData> ImportFromTestDatas
         {
             get
             {
-                yield return ImportFromTestData.Create(null, null, null);
+                // null data
+                yield return new ImportFromTestData()
+                {
+
+                    TestSrcMaParams = null,
+                    TestSrcExParamDatas = null,
+                    TestImportStrategy = ImportStrategy.ApplyAll,
+                    TestExpectMaParams = null,
+                };
                 // TODO: 増やす
             }
+
         }
     }
-
 }

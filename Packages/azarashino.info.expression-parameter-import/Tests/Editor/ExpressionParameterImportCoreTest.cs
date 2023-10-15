@@ -31,7 +31,6 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
             Assert.That(dstGameObject.activeSelf, Is.False);
         }
 
-        [Test]
         [TestCase(ImportStrategy.ApplyAll, false, ExpectedResult = true)]
         [TestCase(ImportStrategy.ApplyAll, true, ExpectedResult = true)]
         [TestCase(ImportStrategy.NoOverwrite, false, ExpectedResult = true)]
@@ -46,12 +45,14 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
 
         public static IEnumerable<ImportFromTestData> ImportFromTestDatas => ExpressionParameterImportTestDefs.ImportFromTestDatas;
 
-        [Test]
         [TestCaseSource(nameof(ImportFromTestDatas))]
         public void ImportFromTest(ImportFromTestData testData)
         {
+            testData.Initialize();
             testData.DoImport();
-            Assert.That(testData.IsOk, Is.True);
+            var ret = testData.IsOk;
+
+            Assert.That(ret, Is.True);
         }
 
     }
