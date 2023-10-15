@@ -22,7 +22,7 @@ jobs:
           lfs: true
       - uses: anatawa12/sh-actions/resolve-vpm-packages@master
         with:
-          project-path: Packages/azarashino.info.expression-parameter-import
+          project-path: ${{ GITHUB_WORKSPACE }}/Packages/azarashino.info.expression-parameter-import
           driver-opts: |
             https://vpm.nadena.dev/vpm.json
       - uses: actions/cache@v2
