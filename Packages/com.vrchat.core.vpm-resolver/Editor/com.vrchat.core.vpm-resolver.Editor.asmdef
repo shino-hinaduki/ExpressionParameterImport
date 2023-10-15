@@ -1,5 +1,5 @@
 {
-    "name": "ExpressionParameterImport.Editor",
+    "name": "com.vrchat.core.vpm-resolver.Editor",
     "references": [],
     "includePlatforms": [
         "Editor"
