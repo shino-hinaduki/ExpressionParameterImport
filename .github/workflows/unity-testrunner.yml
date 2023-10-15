@@ -21,6 +21,9 @@ jobs:
         with:
           lfs: true
       - uses: anatawa12/sh-actions/resolve-vpm-packages@master
+        with:
+          driver-opts: |
+            https://vpm.nadena.dev/vpm.json
       - uses: actions/cache@v2
         with:
           path: ${{ matrix.projectPath }}/Library
