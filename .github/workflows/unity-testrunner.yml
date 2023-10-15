@@ -21,7 +21,7 @@ jobs:
         with:
           lfs: true
       - name: resolve vpm packages
-        run: docker run -v "$(pwd):/work" -w /work --rm mcr.microsoft.com/dotnet/sdk dotnet tool install --global vrchat.vpm.cli && export PATH="$PATH:/root/.dotnet/tools" && vpm resolve project .
+        run: docker run -v "$(pwd):/work" -w /work --rm mcr.microsoft.com/dotnet/sdk bash -c "dotnet tool install --global vrchat.vpm.cli && export PATH='$PATH:/root/.dotnet/tools' && vpm resolve project ."
       - uses: actions/cache@v2
         with:
           path: ${{ matrix.projectPath }}/Library
