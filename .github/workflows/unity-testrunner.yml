@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         projectPath:
-          - ./
+          - Packages\azarashino.info.expression-parameter-import
         unityVersion: 
           - '2019.4.31f1'
         testMode:
