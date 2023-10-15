@@ -11,38 +11,30 @@ jobs:
       matrix:
         projectPath:
           - .
-        unityVersion: 
-          - '2019.4.31f1'
         testMode:
           - playmode
           - editmode
     steps:
-      # checkout
       - uses: actions/checkout@v2
         with:
           lfs: true
-      # cache
-      - uses: actions/cache@v3
+      - uses: actions/cache@v2
         with:
-          path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          path: ${{ matrix.projectPath }}/Library
+          key: Library-${{ matrix.projectPath }}
           restore-keys: |
             Library-
-      # test
       - uses: game-ci/unity-test-runner@v3
         id: tests
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          packageMode: true
           projectPath: ${{ matrix.projectPath }}
-          unityVersion: ${{ matrix.unityVersion }}
           testMode: ${{ matrix.testMode }}
           artifactsPath: ${{ matrix.testMode }}-artifacts
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: ${{ matrix.testMode }} Test Results
           coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+my.assembly.*'
-      # upload results
       - uses: actions/upload-artifact@v2
         if: always()
         with:
