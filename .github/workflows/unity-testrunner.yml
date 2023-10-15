@@ -10,7 +10,9 @@ jobs:
       fail-fast: false
       matrix:
         projectPath:
-          - .
+          - azarashino.info.expression-parameter-import
+        unityVersion: 
+          - '2019.4.31f1'
         testMode:
           - playmode
           - editmode
@@ -30,6 +32,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
           testMode: ${{ matrix.testMode }}
           artifactsPath: ${{ matrix.testMode }}-artifacts
           githubToken: ${{ secrets.GITHUB_TOKEN }}
