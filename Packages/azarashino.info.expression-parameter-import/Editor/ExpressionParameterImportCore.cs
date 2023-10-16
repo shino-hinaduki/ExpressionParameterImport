@@ -71,18 +71,18 @@ namespace azarashino.info.expression_parameter_import.Editor
                 var isDstParamExists = maDstParamIndex != -1;
 
                 // decide whether to apply
-                if (!srcParam.Storategy.IsNeedImport(isDstParamExists))
+                if (!srcParam.Strategy.IsNeedImport(isDstParamExists))
                 {
                     if (srcParam.IsDebug)
                     {
-                        Debug.Log($"[{srcParam.gameObject.name}][Skip] name={srcExParam.name}, storategy={srcParam.Storategy}, isDstParamExists={isDstParamExists}");
+                        Debug.Log($"[{srcParam.gameObject.name}][Skip] name={srcExParam.name}, storategy={srcParam.Strategy}, isDstParamExists={isDstParamExists}");
                     }
                     continue;
                 }
 
                 if (srcParam.IsDebug)
                 {
-                    Debug.Log($"[{srcParam.gameObject.name}][Import] name={srcExParam.name}, storategy={srcParam.Storategy}, isDstParamExists={isDstParamExists}");
+                    Debug.Log($"[{srcParam.gameObject.name}][Import] name={srcExParam.name}, storategy={srcParam.Strategy}, isDstParamExists={isDstParamExists}");
                 }
 
                 // add new

@@ -26,7 +26,7 @@ namespace azarashino.info.expression_parameter_import.Runtime
 
         [SerializeField]
         [Tooltip("Strategies for importing parameters\n- ApplyAll: Overwrite all with the specified ExpressionParameters\n- NoOverwrite: Skip if the Parameter already exists\n- OnlyOverwrite: Skip if the Parameter does not exist and overwrite only if the Parameter does exist\n")]
-        public ImportStrategy Storategy = ImportStrategy.ApplyAll;
+        public ImportStrategy Strategy = ImportStrategy.ApplyAll;
 
         [Header("for Developer")]
         [SerializeField]
@@ -36,7 +36,7 @@ namespace azarashino.info.expression_parameter_import.Runtime
         /// true if already set
         /// </summary>
         public bool IsInsufficient => SrcExpressionParameters == null;
-        public override string ToString() => $"{nameof(ExpressionParameterImport)}({SrcExpressionParameters}, {Storategy})";
+        public override string ToString() => $"{nameof(ExpressionParameterImport)}({SrcExpressionParameters}, {Strategy})";
 
     }
 }
