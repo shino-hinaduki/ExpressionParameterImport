@@ -22,7 +22,7 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
         {
             var srcGameObject = new GameObject();
             srcGameObject.AddComponent<ExpressionParameterImport>();
-            srcGameObject.GetComponent<ExpressionParameterImport>().SrcExpressionParameters = new VRCExpressionParameters();
+            srcGameObject.GetComponent<ExpressionParameterImport>().SrcExpressionParameters = ScriptableObject.CreateInstance<VRCExpressionParameters>();
             srcGameObject.AddComponent<ModularAvatarParameters>();
 
             var dstGameObject = srcGameObject.MakeBackup(namePrefix: "MakeBackUpTest_");
