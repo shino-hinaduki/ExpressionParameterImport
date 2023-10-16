@@ -1,76 +1,85 @@
-# VPM Package Template
+# ExpressionParameterImport
 
-Starter for making Packages, including automation for building and publishing them.
+[![Build Release](https://github.com/shino-hinaduki/ExpressionParameterImport/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/shino-hinaduki/ExpressionParameterImport/actions/workflows/release.yml)
+[![Unity TestRunner](https://github.com/shino-hinaduki/ExpressionParameterImport/actions/workflows/unity-testrunner.yml/badge.svg?branch=main)](https://github.com/shino-hinaduki/ExpressionParameterImport/actions/workflows/unity-testrunner.yml)
 
-Once you're all set up, you'll be able to push changes to this repository and have .zip and .unitypackage versions automatically generated, and a listing made which works in the VPM for delivering updates for this package. If you want to make a listing with a variety of packages, check out our [template-package-listing](https://github.com/vrchat-community/template-package-listing) repo.
+ExpressionParameterImport は [Modular Avatar](https://github.com/bdunderscore/modular-avatar) (以後 MA) 向けの追加コンポーネントです。
+既存の ExpressionParameters アセットに記述された設定を [MA Parameters](https://modular-avatar.nadena.dev/ja/docs/reference/parameters) にコピーすることができます。
 
-## ▶ Getting Started
+[Non-Destructive Modular Framework](https://github.com/bdunderscore/ndmf) Plugin (以後 NDMF) 対応してあるので 、 MA 実行前に非破壊で取り込むことが可能です。
+また、本アセットへの依存性を残すことが懸念であれば、Inspector 上で MA Parameters へ変換 (Bake) する機能も備えています。
 
-* Press [![Use This Template](https://user-images.githubusercontent.com/737888/185467681-e5fdb099-d99f-454b-8d9e-0760e5a6e588.png)](https://github.com/vrchat-community/template-package/generate)
-to start a new GitHub project based on this template.
-  * Choose a fitting repository name and description.
-  * Set the visibility to 'Public'. You can also choose 'Private' and change it later.
-  * You don't need to select 'Include all branches.'
-* Clone this repository locally using Git.
-  * If you're unfamiliar with Git and GitHub, [visit GitHub's documentation](https://docs.github.com/en/get-started/quickstart/git-and-github-learning-resources) to learn more.
-* Add the folder to Unity Hub and open it as a Unity Project.
-* After opening the project, wait while the VPM resolver is downloaded and added to your project.
-  * This gives you access to the VPM Package Maker and Package Resolver tools.
+MA を使わない想定でセットアップされた Animation, ExpressionParameters を使った制作物を、MA 対応するような利用シーンを想定しています。
 
-## 🚇 Migrating Assets Package
-Full details at [Converting Assets to a VPM Package](https://vcc.docs.vrchat.com/guides/convert-unitypackage)
+## 導入方法
 
-## ✏️ Working on Your Package
+[ExpressionParameterImport package-listing](https://shino-hinaduki.github.io/ExpressionParameterImport/) のページに移動し、`Add to VCC` を押して VCC に追加します。
 
-* Delete the "Packages/com.vrchat.demo-template" directory or reuse it for your own package.
-  * If you reuse the package, don't forget to rename it!
-* Update the `.gitignore` file in the "Packages" directory to include your package.
-  * For example, change `!com.vrchat.demo-template` to `!com.username.package-name`.
-  * `.gitignore` files normally *exclude* the contents of your "Packages" directory. This `.gitignore` in this template show how to *include* the demo package. You can easily change this out for your own package name.
-* Open the Unity project and work on your package's files in your favorite code editor.
-* When you're ready, commit and push your changes.
-* Once you've set up the automation as described below, you can easily publish new versions.
+![add-to-vcc.png](Docs~/Images/add-to-vcc.png)
 
-## 🤖 Setting up the Automation
+![add-to-vcc-2.png](Docs~/Images/add-to-vcc-2.png)
 
-Create a repository variable with the name and value described below.
-For details on how to create repository variables, see [Creating Configuration Variables for a Repository](https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository).
-Make sure you are creating a **repository variable**, and not a **repository secret**.
+使用したいプロジェクトを VCC 上で選択し、Manage Packages から ExpressionParameterImport をインポートします
 
-* `PACKAGE_NAME`: the name of your package, like `com.vrchat.demo-template`.
+![add-to-project.png](Docs~/Images/add-to-project.png)
 
-Finally, go to the "Settings" page for your repo, then choose "Pages", and look for the heading "Build and deployment". Change the "Source" dropdown from "Deploy from a branch" to "GitHub Actions".
+## 使用方法
 
-That's it!
-Some other notes:
-* We highly recommend you keep the existing folder structure of this template.
-  * The root of the project should be a Unity project.
-  * Your packages should be in the "Packages" directory.
-  * If you deviate from this folder structure, you'll need to update the paths that assume your package is in the "Packages" directory on lines 24, 38, 41 and 57.
-* If you want to store and generate your web files in a folder other than "Website" in the root, you can change the `listPublicDirectory` item [here in build-listing.yml](.github/workflows/build-listing.yml#L17).
+AvatarDescriptor が付与された GameObject 下で、 MA Parameters が追加された GameObject を選択し、Add Component から Expression Parameter Import を追加します
 
-## 🎉 Publishing a Release
+![add-component.png](Docs~/Images/add-component.png)
 
-You can make a release by running the [Build Release](.github/workflows/release.yml) action. The version specified in your `package.json` file will be used to define the version of the release.
+Src Expression Parameters にコピーしたい ExpressionParameters のアセットを設定します
 
-## 📃 Rebuilding the Listing
+![set-src-expression-parameters.png](Docs~/Images/set-src-expression-parameters.png)
 
-Whenever you make a change to a release - manually publishing it, or manually creating, editing or deleting a release, the [Build Repo Listing](.github/workflows/build-listing.yml) action will make a new index of all the releases available, and publish them as a website hosted fore free on [GitHub Pages](https://pages.github.com/). This listing can be used by the VPM to keep your package up to date, and the generated index page can serve as a simple landing page with info for your package. The URL for your package will be in the format `https://username.github.io/repo-name`.
+以下の表示になっていればセットアップ完了です。NDMF Plugin として機能し、MA の処理プロセスより前にパラメータが MA Parameters にコピーされます。
+また、Scene 直下に Bake 前の GameObject が非アクティブ状態で複製されます。必要に応じて保存か削除をお願いします。
 
-## 🏠 Customizing the Landing Page (Optional)
+![configured.png](Docs~/Images/configured.png)
 
-The action which rebuilds the listing also publishes a landing page. The source for this page is in `Website/index.html`. The automation system uses [Scriban](https://github.com/scriban/scriban) to fill in the objects like `{{ this }}` with information from the latest release's manifest, so it will stay up-to-date with the name, id and description that you provide there. You are welcome to modify this page however you want - just use the existing `{{ template.objects }}` to fill in that info wherever you like. The entire contents of your "Website" folder are published to your GitHub Page each time.
+## Tips
 
-## 💻 Technical Stuff
+### ExpressionParameterImport に依存させたくない
 
-You are welcome to make your own changes to the automation process to make it fit your needs, and you can create Pull Requests if you have some changes you think we should adopt. Here's some more info on the included automation:
+ExpressionParameterImport が追加された GameObject を選択し、右上のメニューから Bake to MA Parameters を選択します。
 
-### Build Release Action
-[release.yml](/.github/workflows/release.yml)
+![bake-menu.png](Docs~/Images/bake-menu.png)
 
-This is a composite action combining a variety of existing GitHub Actions and some shell commands to create both a .zip of your Package and a .unitypackage. It creates a release which is named for the `version` in the `package.json` file found in your target Package, and publishes the zip, the unitypackage and the package.json file to this release.
+以下のように MA Parameters に値が展開されていたら処理成功です。（ExpressionParameterImport 自体は GameObject から外れます）
 
-### Build Repo Listing
-[build-listing.yml](.github/workflows/build-listing.yml)
+![baked.png](Docs~/Images/baked.png)
 
-This is a composite action which builds a vpm-compatible [Repo Listing](https://vcc.docs.vrchat.com/vpm/repos) based on the releases you've created. In order to find all your releases and combine them into a listing, it checks out [another repository](https://github.com/vrchat-community/package-list-action) which has a [Nuke](https://nuke.build/) project which includes the VPM core lib to have access to its types and methods. This project will be expanded to include more functionality in the future - for now, the action just calls its `BuildRepoListing` target.
+### MA Parameters を付け忘れた
+
+NDMF Plugin, Bake to MA Parameters どちらで動作した場合でも、MA Parameters が見つからない場合は自動的に付与します。
+
+### MA Parameters に同じ値が存在している
+
+ExpressionParameterImport を選択したときの Inspector に表示される Strategy 項から挙動を設定できます。
+
+- Apply All: MA Parameters に同名のパラメータがあった場合、そのまま上書き
+- No Overwrite: MA Parameters に同名のパラメータがあった場合、そのパラメータはコピーされない
+- Only Overwrite: MA Parameters に同名のパラメータが含まれているもののみ上書き
+
+※X,Y は 共通の Parameter 名を持つ 値
+
+| #   | MA Parameters | ExpressionParameterImport | Apply All | No Overwirte | Only Overwrite |
+| --- | ------------- | ------------------------- | --------- | ------------ | -------------- |
+| 1   | X             | (設定なし)                | X         | X            | X              |
+| 2   | (設定なし)    | Y                         | Y         | Y            | (値なし)       |
+| 3   | X             | Y                         | Y         | X            | Y              |
+
+1. MA Parameters で定義された値はそのまま残る
+2. MA Parameters に定義がなく、ExpressionParameterImport で定義された値は新規追加扱い。Only Overwrite では Skip される
+3. MA Parameters に定義があり、ExpressionParameterImport でも定義された値は上書き扱い。No Overwrite では Skip される
+
+### ExpressionParameters を複数取り込みたい
+
+ExpressionParameterImport は 1 つの GameObject に複数追加することができます。Inspector 表示順上から処理されます。
+先述の Strategy と組み合わせると干渉しないように合成することは可能ですが、複雑なことを行うのであれば MA Parameters への Bake を推奨します。
+
+### Bake to MA Parameters を実施したけど元に戻したい
+
+Bake 直後であれば CTRL + Z で戻せます。もしくは Scene 直下に Bake 前の GameObject が Backup されるのでどちらかから復元をお願いします。
+MA Parameters -> ExpressionParameters の逆変換は未実装です。需要があれば検討します。

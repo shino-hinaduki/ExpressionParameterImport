@@ -59,7 +59,7 @@ namespace azarashino.info.expression_parameter_import.Tests.Editor
                 maParam.parameters = (TestSrcMaParams ?? Enumerable.Empty<ParameterConfig>()).ToList();
 
                 var srcParam = this._srcGameObject.AddComponent<ExpressionParameterImport>();
-                srcParam.Storategy = TestImportStrategy;
+                srcParam.Strategy = TestImportStrategy;
                 srcParam.SrcExpressionParameters = ScriptableObject.CreateInstance<VRCExpressionParameters>();
                 srcParam.SrcExpressionParameters.parameters = (TestSrcExParamDatas ?? Enumerable.Empty<VRCExpressionParameters.Parameter>()).ToArray();
             }
