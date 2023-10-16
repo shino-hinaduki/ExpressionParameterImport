@@ -6,7 +6,7 @@
 ExpressionParameterImport は [Modular Avatar](https://github.com/bdunderscore/modular-avatar) (以後 MA) 向けの追加コンポーネントです。
 既存の ExpressionParameters アセットに記述された設定を [MA Parameters](https://modular-avatar.nadena.dev/ja/docs/reference/parameters) にコピーすることができます。
 
-[Non-Destructive Modular Framework](https://github.com/bdunderscore/ndmf) Plugin (以後 NDMF) 対応してあるので 、 MA 実行前に非破壊で取り込むことが可能です。
+[Non-Destructive Modular Framework](https://github.com/bdunderscore/ndmf) (以後 NDMF) Plugin 対応しており 、 MA 実行時にコピー可能です。
 また、本アセットへの依存性を残すことが懸念であれば、Inspector 上で MA Parameters へ変換 (Bake) する機能も備えています。
 
 MA を使わない想定でセットアップされた Animation, ExpressionParameters を使った制作物を、MA 対応するような利用シーンを想定しています。
@@ -25,7 +25,7 @@ MA を使わない想定でセットアップされた Animation, ExpressionPara
 
 ## 使用方法
 
-AvatarDescriptor が付与された GameObject 下で、 MA Parameters が追加された GameObject を選択し、Add Component から Expression Parameter Import を追加します
+MA Parameters が追加された GameObject を選択し、Add Component から Expression Parameter Import を追加します
 
 ![add-component.png](Docs~/Images/add-component.png)
 
@@ -34,7 +34,7 @@ Src Expression Parameters にコピーしたい ExpressionParameters のアセ�
 ![set-src-expression-parameters.png](Docs~/Images/set-src-expression-parameters.png)
 
 以下の表示になっていればセットアップ完了です。NDMF Plugin として機能し、MA の処理プロセスより前にパラメータが MA Parameters にコピーされます。
-また、Scene 直下に Bake 前の GameObject が非アクティブ状態で複製されます。必要に応じて保存か削除をお願いします。
+(IsDebug はチェックを入れるとパラメータの処理履歴を Console 出力する機能なのでどちらでも問題ないです。Strategy は後述)
 
 ![configured.png](Docs~/Images/configured.png)
 
@@ -47,6 +47,7 @@ ExpressionParameterImport が追加された GameObject を選択し、右上の
 ![bake-menu.png](Docs~/Images/bake-menu.png)
 
 以下のように MA Parameters に値が展開されていたら処理成功です。（ExpressionParameterImport 自体は GameObject から外れます）
+また、Scene 直下に Bake 前の GameObject が非アクティブ状態で複製されます。必要に応じて保存か削除をお願いします。
 
 ![baked.png](Docs~/Images/baked.png)
 
@@ -76,7 +77,7 @@ ExpressionParameterImport を選択したときの Inspector に表示される 
 
 ### ExpressionParameters を複数取り込みたい
 
-ExpressionParameterImport は 1 つの GameObject に複数追加することができます。Inspector 表示順上から処理されます。
+ExpressionParameterImport は 1 つの GameObject に複数追加することができます。Inspector 表示順で上から処理されます。
 先述の Strategy と組み合わせると干渉しないように合成することは可能ですが、複雑なことを行うのであれば MA Parameters への Bake を推奨します。
 
 ### Bake to MA Parameters を実施したけど元に戻したい
