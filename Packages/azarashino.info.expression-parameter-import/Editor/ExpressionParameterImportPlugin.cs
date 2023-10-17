@@ -33,7 +33,7 @@ namespace azarashino.info.expression_parameter_import.Editor
                         // apply params
                         maParam.ImportFrom(srcParam);
                         // Removed for possible appearance as noise of unknown identification from other tools
-                        Object.Destroy(srcParam);
+                        Object.DestroyImmediate(srcParam);
                     }
                 });
         }
