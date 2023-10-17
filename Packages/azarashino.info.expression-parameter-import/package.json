@@ -1,7 +1,7 @@
 {
   "name": "azarashino.info.expression-parameter-import",
   "displayName": "Expression Parameter Import",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "unity": "2019.4",
   "description": "Merge an existing ExpressionParameter into an element of MA Parameter",
   "vrchatVersion": "2022.1.1",
