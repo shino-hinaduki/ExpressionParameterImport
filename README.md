@@ -3,6 +3,8 @@
 [![Build Release](https://github.com/shino-hinaduki/ExpressionParameterImport/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/shino-hinaduki/ExpressionParameterImport/actions/workflows/release.yml)
 [![Unity TestRunner](https://github.com/shino-hinaduki/ExpressionParameterImport/actions/workflows/unity-testrunner.yml/badge.svg?branch=main)](https://github.com/shino-hinaduki/ExpressionParameterImport/actions/workflows/unity-testrunner.yml)
 
+![thumbnail](Docs~/Images/thumbnail_2-1.png)
+
 ExpressionParameterImport は [Modular Avatar](https://github.com/bdunderscore/modular-avatar) (以後 MA) 向けの追加コンポーネントです。
 既存の ExpressionParameters アセットに記述された設定を [MA Parameters](https://modular-avatar.nadena.dev/ja/docs/reference/parameters) にコピーすることができます。
 
