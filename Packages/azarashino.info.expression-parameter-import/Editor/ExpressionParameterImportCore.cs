@@ -116,7 +116,6 @@ namespace azarashino.info.expression_parameter_import.Editor
                 dstMaParam.defaultValue = srcExParam.defaultValue;
                 dstMaParam.saved = srcExParam.saved;
                 dstMaParam.internalParameter = false;
-                dstMaParam.isPrefix = false;
                 // apply
                 maParam.parameters[maDstParamIndex] = dstMaParam; // struct copy
 
